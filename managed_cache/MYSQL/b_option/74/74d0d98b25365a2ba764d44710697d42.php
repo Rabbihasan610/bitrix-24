@@ -1,0 +1,7 @@
+<?
+if($INCLUDE_FROM_CACHE!='Y')return false;
+$datecreate = '001698862022';
+$dateexpire = '001698865622';
+$ser_content = 'a:2:{s:7:"CONTENT";s:0:"";s:4:"VARS";a:2:{s:1:"-";a:14:{s:10:"calendar_2";s:1:"Y";s:14:"iblock_absence";s:1:"1";s:13:"iblock_honour";s:1:"2";s:20:"iblock_state_history";s:1:"4";s:16:"iblock_structure";s:1:"3";s:11:"iblock_type";s:9:"structure";s:20:"iblock_type_calendar";s:6:"events";s:20:"new_portal_structure";s:1:"Y";s:19:"ratingSubordinateId";s:1:"7";s:22:"show_menu_preset_popup";s:1:"Y";s:13:"tz_transition";s:1:"Y";s:22:"tz_transition_daylight";s:97:"<transitionRule month="3" day="su" weekdayOfMonth="last" /><transitionTime>2:0:0</transitionTime>";s:22:"tz_transition_standard";s:98:"<transitionRule month="10" day="su" weekdayOfMonth="last" /><transitionTime>3:0:0</transitionTime>";s:18:"ustat_online_users";s:62:"a:2:{s:4:"date";i:1698786000;s:7:"userIds";a:1:{i:0;s:1:"1";}}";}s:2:"s1";a:9:{s:16:"path_mail_client";s:6:"/mail/";s:16:"path_mail_config";s:25:"/mail/config/edit?id=#id#";s:15:"path_task_group";s:35:"/workgroups/group/#GROUP_ID#/tasks/";s:21:"path_task_group_entry";s:55:"/workgroups/group/#GROUP_ID#/tasks/task/view/#TASK_ID#/";s:14:"path_task_user";s:39:"/company/personal/user/#USER_ID#/tasks/";s:20:"path_task_user_entry";s:59:"/company/personal/user/#USER_ID#/tasks/task/view/#TASK_ID#/";s:9:"path_user";s:33:"/company/personal/user/#USER_ID#/";s:15:"search_user_url";s:28:"/company/personal/user/#ID#/";s:20:"wizard_life_forum_id";s:1:"1";}}}';
+return true;
+?>

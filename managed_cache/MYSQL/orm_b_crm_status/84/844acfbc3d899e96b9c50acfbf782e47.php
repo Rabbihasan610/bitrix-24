@@ -1,0 +1,7 @@
+<?
+if($INCLUDE_FROM_CACHE!='Y')return false;
+$datecreate = '001698854727';
+$dateexpire = '001698941127';
+$ser_content = 'a:2:{s:7:"CONTENT";s:0:"";s:4:"VARS";a:4:{i:0;a:10:{s:2:"ID";s:2:"79";s:9:"ENTITY_ID";s:21:"SMART_INVOICE_STAGE_1";s:9:"STATUS_ID";s:8:"DT31_1:N";s:4:"NAME";s:3:"New";s:9:"NAME_INIT";s:3:"New";s:4:"SORT";s:2:"10";s:6:"SYSTEM";s:1:"Y";s:5:"COLOR";s:7:"#39A8EF";s:9:"SEMANTICS";N;s:11:"CATEGORY_ID";s:1:"1";}i:1;a:10:{s:2:"ID";s:2:"80";s:9:"ENTITY_ID";s:21:"SMART_INVOICE_STAGE_1";s:9:"STATUS_ID";s:8:"DT31_1:S";s:4:"NAME";s:16:"Sent to customer";s:9:"NAME_INIT";s:16:"Sent to customer";s:4:"SORT";s:2:"20";s:6:"SYSTEM";s:1:"N";s:5:"COLOR";s:7:"#2FC6F6";s:9:"SEMANTICS";N;s:11:"CATEGORY_ID";s:1:"1";}i:2;a:10:{s:2:"ID";s:2:"81";s:9:"ENTITY_ID";s:21:"SMART_INVOICE_STAGE_1";s:9:"STATUS_ID";s:8:"DT31_1:P";s:4:"NAME";s:4:"Paid";s:9:"NAME_INIT";s:4:"Paid";s:4:"SORT";s:2:"30";s:6:"SYSTEM";s:1:"Y";s:5:"COLOR";s:7:"#7BD500";s:9:"SEMANTICS";s:1:"S";s:11:"CATEGORY_ID";s:1:"1";}i:3;a:10:{s:2:"ID";s:2:"82";s:9:"ENTITY_ID";s:21:"SMART_INVOICE_STAGE_1";s:9:"STATUS_ID";s:8:"DT31_1:D";s:4:"NAME";s:6:"Unpaid";s:9:"NAME_INIT";s:6:"Unpaid";s:4:"SORT";s:2:"40";s:6:"SYSTEM";s:1:"Y";s:5:"COLOR";s:7:"#FF5752";s:9:"SEMANTICS";s:1:"F";s:11:"CATEGORY_ID";s:1:"1";}}}';
+return true;
+?>

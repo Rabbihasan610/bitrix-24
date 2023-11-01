@@ -1,0 +1,1 @@
+<?php $filesInfo = ["/bitrix/js/main/core/css/core_date.css" => "16988537919928","/bitrix/js/main/core/css/core_tooltip.css" => "16988537917772","/bitrix/js/main/core/css/core_uf.css" => "16988537915519",]; ?>

@@ -1,0 +1,7 @@
+<?
+if($INCLUDE_FROM_CACHE!='Y')return false;
+$datecreate = '001698854581';
+$dateexpire = '001698858181';
+$ser_content = 'a:2:{s:7:"CONTENT";s:0:"";s:4:"VARS";a:2:{s:1:"-";a:7:{s:21:"needEfficiencyRecount";s:1:"N";s:27:"needTaskCheckListConversion";s:1:"N";s:31:"needTemplateCheckListConversion";s:1:"N";s:14:"sanitize_level";s:1:"3";s:23:"task_comment_allow_edit";s:1:"Y";s:25:"task_comment_allow_remove";s:1:"Y";s:29:"tasksDisableDefaultListGroups";s:19:"2023-11-01 18:52:07";}s:2:"s1";a:8:{s:16:"paths_task_group";s:35:"/workgroups/group/#group_id#/tasks/";s:23:"paths_task_group_action";s:59:"/workgroups/group/#group_id#/tasks/task/#action#/#task_id#/";s:21:"paths_task_group_edit";s:55:"/workgroups/group/#group_id#/tasks/task/edit/#task_id#/";s:22:"paths_task_group_entry";s:55:"/workgroups/group/#group_id#/tasks/task/view/#task_id#/";s:15:"paths_task_user";s:39:"/company/personal/user/#user_id#/tasks/";s:22:"paths_task_user_action";s:63:"/company/personal/user/#user_id#/tasks/task/#action#/#task_id#/";s:20:"paths_task_user_edit";s:59:"/company/personal/user/#user_id#/tasks/task/edit/#task_id#/";s:21:"paths_task_user_entry";s:59:"/company/personal/user/#user_id#/tasks/task/view/#task_id#/";}}}';
+return true;
+?>

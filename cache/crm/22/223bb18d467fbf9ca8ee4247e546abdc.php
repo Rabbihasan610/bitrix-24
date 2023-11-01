@@ -1,0 +1,7 @@
+<?
+if($INCLUDE_FROM_CACHE!='Y')return false;
+$datecreate = '001698853922';
+$dateexpire = '001698940322';
+$ser_content = 'a:2:{s:7:"CONTENT";s:0:"";s:4:"VARS";a:1:{s:9:"typesData";a:1:{i:0;a:24:{s:2:"ID";s:1:"1";s:4:"NAME";s:12:"SmartInvoice";s:10:"TABLE_NAME";s:22:"b_crm_dynamic_items_31";s:5:"TITLE";s:13:"Smart Invoice";s:4:"CODE";s:16:"BX_SMART_INVOICE";s:10:"CREATED_BY";s:1:"0";s:14:"ENTITY_TYPE_ID";s:2:"31";s:21:"IS_CATEGORIES_ENABLED";s:1:"N";s:17:"IS_STAGES_ENABLED";s:1:"Y";s:28:"IS_BEGIN_CLOSE_DATES_ENABLED";s:1:"Y";s:17:"IS_CLIENT_ENABLED";s:1:"Y";s:27:"IS_USE_IN_USERFIELD_ENABLED";s:1:"Y";s:29:"IS_LINK_WITH_PRODUCTS_ENABLED";s:1:"Y";s:23:"IS_CRM_TRACKING_ENABLED";s:1:"Y";s:20:"IS_MYCOMPANY_ENABLED";s:1:"Y";s:20:"IS_DOCUMENTS_ENABLED";s:1:"Y";s:17:"IS_SOURCE_ENABLED";s:1:"Y";s:20:"IS_OBSERVERS_ENABLED";s:1:"Y";s:21:"IS_RECYCLEBIN_ENABLED";s:1:"Y";s:21:"IS_AUTOMATION_ENABLED";s:1:"Y";s:19:"IS_BIZ_PROC_ENABLED";s:1:"Y";s:23:"IS_SET_OPEN_PERMISSIONS";s:1:"Y";s:19:"IS_PAYMENTS_ENABLED";s:1:"Y";s:19:"IS_COUNTERS_ENABLED";s:1:"Y";}}}}';
+return true;
+?>
