@@ -381,7 +381,7 @@ class CAllCrmCompany
 		$result = [
 			'ID' => ['FIELD' => $tableAliasName . '.ID', 'TYPE' => 'int'],
 			'COMPANY_TYPE' => ['FIELD' => $tableAliasName . '.COMPANY_TYPE', 'TYPE' => 'string'],
-			// 'TITLE' => ['FIELD' => $tableAliasName . '.TITLE', 'TYPE' => 'string'],
+			'TITLE' => ['FIELD' => $tableAliasName . '.TITLE', 'TYPE' => 'string'],
 			'LOGO' => ['FIELD' => $tableAliasName . '.LOGO', 'TYPE' => 'string'],
 			'LEAD_ID' => ['FIELD' => $tableAliasName . '.LEAD_ID', 'TYPE' => 'int'],
 
