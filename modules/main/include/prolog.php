@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../bx_root.php");
+// require_once(__DIR__ . "/../bx_root.php");
 
 if (file_exists($_SERVER["DOCUMENT_ROOT"].BX_PERSONAL_ROOT."/html_pages/.enabled"))
 {
