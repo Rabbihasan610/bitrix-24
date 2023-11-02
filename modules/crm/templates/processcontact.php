@@ -11,7 +11,7 @@ $arFields = Array(
 
 	'AUTO_EXECUTE' => '0',
 	'NAME' => GetMessage('CRM_BP_CONTACT_TITLE'),
-	'DESCRIPTION' => '',
+	'DESCRIPTION' => 'Hello World from CRM!',
 	'TEMPLATE' => Array
 		(
 			Array
