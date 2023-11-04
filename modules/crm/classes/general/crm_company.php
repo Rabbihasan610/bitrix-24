@@ -1680,19 +1680,6 @@ class CAllCrmCompany
 			return false;
 		}
 
-		// check if shared folder already exists
-
-		$folder = \Bitrix\Disk\Folder::load([
-			'=ENTITY_ID' => 'CRM_COMPANY',
-			'=ENTITY_TYPE' => \Bitrix\Crm\Integration\StorageType::getDefaultTypeID(),
-			'=XML_ID' => 'COMPANY_'.$fields['ID']
-		]);
-
-		if($folder)
-		{
-			return $folder->getId();
-		}
-
 		// create shared folder
 		$folder = \Bitrix\Disk\Folder::add([
 			'NAME'      => $fields['TITLE'],
