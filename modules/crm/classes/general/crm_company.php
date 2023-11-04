@@ -1667,7 +1667,7 @@ class CAllCrmCompany
 			);
 		}
 
-		self::createSharedFolder($arFields, $options);
+		// self::createSharedFolder($arFields, $options);
 
 		return $result;
 	}
