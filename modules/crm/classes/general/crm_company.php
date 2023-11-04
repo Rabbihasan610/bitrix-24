@@ -1680,15 +1680,25 @@ class CAllCrmCompany
 			return false;
 		}
 
- 		// create new drive folder
-		$folder = new Folder(array(
-			'NAME' => $fields['TITLE'],
-			'CREATED_BY' => $fields['ASSIGNED_BY_ID'],
-			'TYPE' => \Bitrix\Disk\ProxyType\Common::className(),
-		));
+		$folder = new Folder();
 
-		$folder->setXmlId("COMPANY_{$fields['ID']}");
-		$folder->save();
+		$folder->addSubFolder([
+			'NAME' => $fields['TITLE'],
+			'CREATED_BY' => $fields['CREATED_BY_ID'],
+			'PARENT_ID' => 0,
+			'SHARED' => true,
+			'NEED_TO_READ' => [],
+			'NEED_TO_UPDATE' => [],
+			'NEED_TO_DELETE' => [],
+			'NEED_TO_RIGHTS_ADD' => [],
+			'NEED_TO_RIGHTS_UPDATE' => [],
+			'NEED_TO_RIGHTS_DELETE' => [],
+		]);
+
+		// appropriate rights
+	
+
+		return $folder->getId();
 
 
 	}
