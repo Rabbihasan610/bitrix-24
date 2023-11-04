@@ -1560,10 +1560,6 @@ class CAllCrmCompany
 
 			self::getContentTypeIdAdapter()->performAdd($arFields, $options);
 
-			// Creating of company is a folder event for disk.
-			// We should add UF for disk.
-
-			self::createSharedFolder($arFields, $options);
 
 			if(isset($options['REGISTER_SONET_EVENT']) && $options['REGISTER_SONET_EVENT'] === true)
 			{
@@ -1670,7 +1666,7 @@ class CAllCrmCompany
 			);
 		}
 
-		
+		self::createSharedFolder($arFields, $options);
 
 		return $result;
 	}
@@ -1690,15 +1686,8 @@ class CAllCrmCompany
 			'DESCRIPTION' => $folderDescription,
 		], $fields['ASSIGNED_BY_ID']);
 
-		if ($folder)
-		{
-			echo "Shared folder created successfully.";
-		}
-		else
-		{
-			echo "Failed to create the shared folder.";
-		}
-
+		
+		return;
 		
 	}
 
