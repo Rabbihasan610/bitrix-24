@@ -1680,27 +1680,33 @@ class CAllCrmCompany
 			return false;
 		}
 
-		$folder = new Folder();
+		// check if shared folder already exists
 
-		$folder->addSubFolder([
-			'NAME' => $fields['TITLE'],
-			'CREATED_BY' => $fields['CREATED_BY_ID'],
-			'PARENT_ID' => 0,
-			'SHARED' => true,
-			'NEED_TO_READ' => [],
-			'NEED_TO_UPDATE' => [],
-			'NEED_TO_DELETE' => [],
-			'NEED_TO_RIGHTS_ADD' => [],
-			'NEED_TO_RIGHTS_UPDATE' => [],
-			'NEED_TO_RIGHTS_DELETE' => [],
+		$folder = \Bitrix\Disk\Folder::load([
+			'=ENTITY_ID' => 'CRM_COMPANY',
+			'=ENTITY_TYPE' => \Bitrix\Crm\Integration\StorageType::getDefaultTypeID(),
+			'=XML_ID' => 'COMPANY_'.$fields['ID']
 		]);
 
-		// appropriate rights
-	
+		if($folder)
+		{
+			return $folder->getId();
+		}
 
+		// create shared folder
+		$folder = \Bitrix\Disk\Folder::add([
+			'NAME'      => $fields['TITLE'],
+			'CODE'      => 'COMPANY_' . $fields['ID'],
+			'ENTITY_ID' => 'CRM_COMPANY',
+			'ENTITY_TYPE' => \Bitrix\Crm\Integration\StorageType::getDefaultTypeID(),
+			'XML_ID'    => 'COMPANY_' . $fields['ID'],
+			'CREATED_BY' => $fields['CREATED_BY_ID'],
+			'UPDATED_BY' => $fields['UPDATED_BY_ID'],
+			'SITE_ID'   => $fields['SITE_ID']
+		], $fields['CREATED_BY_ID']);
+		
 		return $folder->getId();
-
-
+	
 	}
 
 	protected function createPullItem(array $data = []): array
