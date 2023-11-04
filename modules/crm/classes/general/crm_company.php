@@ -1699,8 +1699,9 @@ class CAllCrmCompany
 
 		if($folderId)
 		{
-			$connection = Application::getConnection();
-			$connection->queryExecute('UPDATE b_crm_company SET SHARED_FOLDER_ID = ' . $folderId . ' WHERE ID = ' . $fields['ID']);
+			// save folder id to company
+			$company = new \CCrmCompany(false);
+			$company->update($fields['ID'], ['UF_SHARED_DOCS' => $folderId]);
 		}
 
 		return $folderId;
