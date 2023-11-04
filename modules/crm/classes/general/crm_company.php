@@ -1673,13 +1673,14 @@ class CAllCrmCompany
 	}
 	// create shared folder for company
 
-	public function createSharedFolder(array $fields): int
+	protected function createSharedFolder(array $fields): int
 	{
+		if(!Loader::includeModule('disk'))
+		{
+			return false;
+		}
 
-		// if(!Loader::includeModule('disk'))
-		// {
-		// 	return false;
-		// }
+
 
 		$folder = new Folder();
 
@@ -1701,13 +1702,13 @@ class CAllCrmCompany
 		return $folderId;
 		// save folder id to company
 
-		if ($folderId)
-		{
-			$connection = Application::getConnection();
-			$connection->queryExecute("
-				UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
-			");
-		}
+		// if ($folderId)
+		// {
+		// 	$connection = Application::getConnection();
+		// 	$connection->queryExecute("
+		// 		UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
+		// 	");
+		// }
 
 	}
 
