@@ -1697,15 +1697,13 @@ class CAllCrmCompany
 
 		$folderId = $folder->getId();
 
-		// save folder id to company
-
-		if ($folderId)
+		if($folderId)
 		{
 			$connection = Application::getConnection();
-			$connection->queryExecute("
-				UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
-			");
+			$connection->queryExecute('UPDATE b_crm_company SET SHARED_FOLDER_ID = ' . $folderId . ' WHERE ID = ' . $fields['ID']);
 		}
+
+		return $folderId;
 
 	}
 
