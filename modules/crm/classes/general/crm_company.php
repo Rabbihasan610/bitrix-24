@@ -1208,6 +1208,8 @@ class CAllCrmCompany
 
 	public function Add(array &$arFields, $bUpdateSearch = true, $options = array())
 	{
+
+		return "New company ID";
 		global $DB;
 
 		if(!is_array($options))
