@@ -1672,17 +1672,19 @@ class CAllCrmCompany
 
 	// create shared folder for company
 
-	public function createSharedFolder(array $fields): void
+	public function createSharedFolder(array $fields): int
 	{
 		
-		if (!Loader::includeModule('disk'))
+		if(!Loader::includeModule('disk'))
 		{
-			return;
+			return false;
 		}
 
 		$folder = new Folder($fields['TITLE'], $fields['ASSIGNED_BY_ID']);
 
 		$folderId = $folder->getId();
+
+		return $folderId;
 		// save folder id to company
 
 		if ($folderId)
