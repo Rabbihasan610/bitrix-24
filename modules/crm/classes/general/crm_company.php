@@ -1693,7 +1693,7 @@ class CAllCrmCompany
 					'RIGHTS' => [
 						[
 							'ACCESS_CODE' => $securityContext->getAccessCode(),
-							'TASK_ID' => $securityContext->getTaskByLevel(\Bitrix\Disk\Internals\ObjectTable::ACCESS_READ),
+							'TASK_ID' => 1,
 						],
 					],
 				],
