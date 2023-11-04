@@ -21,8 +21,8 @@ use Bitrix\Crm\Category\PermissionEntityTypeHelper;
 use Bitrix\Crm\Entity\Traits\EntityFieldsNormalizer;
 use Bitrix\Crm\Integrity\DuplicateRequisiteCriterion;
 use Bitrix\Crm\Integrity\DuplicateBankDetailCriterion;
-use Bitrix\Main\Application;
 use Bitrix\Disk\Folder;
+use Bitrix\Disk\Driver;
 
 
 class CAllCrmCompany
@@ -1680,33 +1680,15 @@ class CAllCrmCompany
 			return false;
 		}
 
-		$folder = new Folder();
-
-		$folder->addSubFolder([
+ 		// create new drive folder
+		$folder = new Folder(array(
 			'NAME' => $fields['TITLE'],
-			'CREATED_BY' => $fields['CREATED_BY_ID'],
-			'PARENT_ID' => 0,
-			'SHARED' => true,
-			'NEED_TO_READ' => [],
-			'NEED_TO_UPDATE' => [],
-			'NEED_TO_DELETE' => [],
-			'NEED_TO_RIGHTS_ADD' => [],
-			'NEED_TO_RIGHTS_UPDATE' => [],
-			'NEED_TO_RIGHTS_DELETE' => [],
-		]);
+			'CREATED_BY' => $fields['ASSIGNED_BY_ID'],
+			'TYPE' => \Bitrix\Disk\ProxyType\Common::className(),
+		));
 
-
-		// add this folder in disk table
-
-		$connection = Application::getConnection();
-		$helper = $connection->getSqlHelper();
-		// store drive folder id in crm table
-
-		$connection->queryExecute("
-			UPDATE b_crm_company SET UF_SHARED_FOLDER_ID = {$helper->forSql($folder->getId())} WHERE ID = {$helper->forSql($fields['ID'])}
-		");
-	
-		return $folder->getId();
+		$folder->setXmlId("COMPANY_{$fields['ID']}");
+		$folder->save();
 
 
 	}
