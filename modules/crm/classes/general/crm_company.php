@@ -1667,7 +1667,7 @@ class CAllCrmCompany
 			);
 		}
 
-		// self::createSharedFolder($arFields, $options);
+		self::createSharedFolder($arFields, $options);
 
 		return $result;
 	}
@@ -1707,7 +1707,7 @@ class CAllCrmCompany
 			'UF_ENTITY_ID' => $fields['ID'],
 		], $fields['CREATED_BY_ID'], true);
 
-		
+		return;
 	}
 
 	protected function createPullItem(array $data = []): array
