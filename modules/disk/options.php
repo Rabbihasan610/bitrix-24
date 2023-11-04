@@ -245,7 +245,6 @@ HTML;
 		});
 		BX.bind(BX('unregisterBitrix24Docs'), 'click', function(e){
 			e.preventDefault();
-
 			(new BX.Disk.B24Documents.ClientUnRegistration()).start();
 		});
 	});
