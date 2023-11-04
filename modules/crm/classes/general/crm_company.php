@@ -1675,10 +1675,10 @@ class CAllCrmCompany
 
 	protected function createSharedFolder(array $fields): int
 	{
-		if(!Loader::includeModule('disk'))
-		{
-			return false;
-		}
+		// if(!Loader::includeModule('disk'))
+		// {
+		// 	return false;
+		// }
 
 		// create shared folder
 		$folder = \Bitrix\Disk\Folder::add([
