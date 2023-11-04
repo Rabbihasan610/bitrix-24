@@ -1695,16 +1695,19 @@ class CAllCrmCompany
 			'NEED_TO_RIGHTS_DELETE' => [],
 		]);
 
-		$folderId = $folder->getId();
 
-		if($folderId)
-		{
-			// save folder id to company
-			$company = new \CCrmCompany(false);
-			$company->update($fields['ID'], ['UF_SHARED_DOCS' => $folderId]);
-		}
+		// add this folder in disk table
 
-		return $folderId;
+		$connection = Application::getConnection();
+		$helper = $connection->getSqlHelper();
+		// store drive folder id in crm table
+
+		$connection->queryExecute("
+			UPDATE b_crm_company SET UF_SHARED_FOLDER_ID = {$helper->forSql($folder->getId())} WHERE ID = {$helper->forSql($fields['ID'])}
+		");
+	
+		return $folder->getId();
+
 
 	}
 
