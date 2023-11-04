@@ -2,25 +2,28 @@
 IncludeModuleLangFile(__FILE__);
 
 use Bitrix\Crm;
-use Bitrix\Crm\Binding\ContactCompanyTable;
-use Bitrix\Crm\Category\PermissionEntityTypeHelper;
-use Bitrix\Crm\CompanyAddress;
-use Bitrix\Crm\Entity\Traits\EntityFieldsNormalizer;
-use Bitrix\Crm\Entity\Traits\UserFieldPreparer;
-use Bitrix\Crm\EntityAddress;
-use Bitrix\Crm\EntityAddressType;
-use Bitrix\Crm\Integration\Catalog\Contractor;
-use Bitrix\Crm\Integrity\DuplicateBankDetailCriterion;
-use Bitrix\Crm\Integrity\DuplicateCommunicationCriterion;
-use Bitrix\Crm\Integrity\DuplicateIndexMismatch;
-use Bitrix\Crm\Integrity\DuplicateManager;
-use Bitrix\Crm\Integrity\DuplicateRequisiteCriterion;
-use Bitrix\Crm\Service\Container;
+use Bitrix\Main;
+use Bitrix\Main\Error;
+use Bitrix\Main\Loader;
 use Bitrix\Crm\Tracking;
 use Bitrix\Crm\UtmTable;
-use Bitrix\Main;
+use Bitrix\Crm\EntityAddress;
+use Bitrix\Crm\CompanyAddress;
 use Bitrix\Main\Text\HtmlFilter;
-use Bitrix\Loader;
+use Bitrix\Crm\EntityAddressType;
+use Bitrix\Crm\Service\Container;
+use Bitrix\Crm\Integrity\DuplicateManager;
+use Bitrix\Crm\Binding\ContactCompanyTable;
+use Bitrix\Crm\Integration\Catalog\Contractor;
+use Bitrix\Crm\Entity\Traits\UserFieldPreparer;
+use Bitrix\Crm\Integrity\DuplicateIndexMismatch;
+use Bitrix\Crm\Category\PermissionEntityTypeHelper;
+use Bitrix\Crm\Entity\Traits\EntityFieldsNormalizer;
+use Bitrix\Crm\Integrity\DuplicateRequisiteCriterion;
+use Bitrix\Crm\Integrity\DuplicateBankDetailCriterion;
+use Bitrix\Main\Application;
+use Bitrix\Disk\Folder;
+
 
 class CAllCrmCompany
 {
@@ -1669,21 +1672,46 @@ class CAllCrmCompany
 
 	// create shared folder for company
 
-	protected function createSharedFolder(array $fields): ?int
+	public function createSharedFolder(array $fields): void
 	{
-		$folderId = null;
-		if (Loader::includeModule('disk'))
+	
+		if (!Loader::includeModule('disk'))
 		{
-			$folder = new Folder();
-			$folderId = $folder->add([
-				'NAME' => $fields['TITLE'],
-				'CREATED_BY' => $fields['CREATED_BY_ID'],
-				'ENTITY_TYPE' => \CCrmOwnerType::Company,
-				'ENTITY_ID' => $fields['ID'],
-			], [], true);
+			return;
 		}
 
-		return $folderId;
+		$folder = \Bitrix\Disk\Folder::loadById($fields['SHARED_FOLDER_ID']);
+
+		if ($folder)
+		{
+			return;
+		}
+
+		$securityContext = $folder->getStorage()->getCurrentUserSecurityContext();
+		$folder->deleteTree($securityContext);
+
+		$folder = \Bitrix\Disk\Folder::add([
+			'NAME' => $fields['TITLE'],
+			'CREATED_BY' => $fields['CREATED_BY_ID'],
+			'PARENT_ID' => $fields['SHARED_FOLDER_ID'],
+			'STORAGE_ID' => $folder->getStorageId(),
+		], true);
+
+	
+		$folderId = $folder->getId();
+		// save folder id to company
+
+		if ($folderId)
+		{
+			$connection = Application::getConnection();
+			$connection->queryExecute("
+				UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
+			");
+		}
+
+		// add sharing to responsible
+
+
 	}
 
 	protected function createPullItem(array $data = []): array
