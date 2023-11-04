@@ -1690,12 +1690,11 @@ class CAllCrmCompany
 		$securityContext = $folder->getStorage()->getCurrentUserSecurityContext();
 		$folder->deleteTree($securityContext);
 
-		$folder = \Bitrix\Disk\Folder::add([
+		$folder = $folder->addSubFolder([
 			'NAME' => $fields['TITLE'],
-			'CREATED_BY' => $fields['CREATED_BY_ID'],
-			'PARENT_ID' => $fields['SHARED_FOLDER_ID'],
-			'STORAGE_ID' => $folder->getStorageId(),
-		], true);
+			'CREATED_BY' => $fields['ASSIGNED_BY_ID'],
+			'UPDATED_BY' => $fields['ASSIGNED_BY_ID'],
+		], $securityContext);
 
 	
 		$folderId = $folder->getId();
