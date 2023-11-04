@@ -1692,12 +1692,6 @@ class CAllCrmCompany
 
 		if ($folder)
 		{
-		
-			$accessCodes = [
-			];
-
-			// Grant access to the folder
-		
 			echo "Shared folder created successfully.";
 		}
 		else
