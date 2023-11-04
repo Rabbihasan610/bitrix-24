@@ -1209,7 +1209,6 @@ class CAllCrmCompany
 	public function Add(array &$arFields, $bUpdateSearch = true, $options = array())
 	{
 
-		return "New company ID";
 		global $DB;
 
 		if(!is_array($options))
@@ -1677,10 +1676,10 @@ class CAllCrmCompany
 	public function createSharedFolder(array $fields): int
 	{
 
-		if(!Loader::includeModule('disk'))
-		{
-			return false;
-		}
+		// if(!Loader::includeModule('disk'))
+		// {
+		// 	return false;
+		// }
 
 		$folder = new Folder();
 
