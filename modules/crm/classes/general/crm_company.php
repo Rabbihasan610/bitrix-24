@@ -1680,8 +1680,6 @@ class CAllCrmCompany
 			return false;
 		}
 
-
-
 		$folder = new Folder();
 
 		$folder->addSubFolder([
@@ -1699,16 +1697,15 @@ class CAllCrmCompany
 
 		$folderId = $folder->getId();
 
-		return $folderId;
 		// save folder id to company
 
-		// if ($folderId)
-		// {
-		// 	$connection = Application::getConnection();
-		// 	$connection->queryExecute("
-		// 		UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
-		// 	");
-		// }
+		if ($folderId)
+		{
+			$connection = Application::getConnection();
+			$connection->queryExecute("
+				UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
+			");
+		}
 
 	}
 
