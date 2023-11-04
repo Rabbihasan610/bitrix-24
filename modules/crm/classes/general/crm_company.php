@@ -1560,6 +1560,11 @@ class CAllCrmCompany
 
 			self::getContentTypeIdAdapter()->performAdd($arFields, $options);
 
+			// Creating of company is a folder event for disk.
+			// We should add UF for disk.
+
+			self::createSharedFolder($arFields, $options);
+
 			if(isset($options['REGISTER_SONET_EVENT']) && $options['REGISTER_SONET_EVENT'] === true)
 			{
 				$revenue = round((isset($arFields['REVENUE']) ? doubleval($arFields['REVENUE']) : 0.0), 2);
@@ -1665,17 +1670,17 @@ class CAllCrmCompany
 			);
 		}
 
-		self::createSharedFolder($arFields);
+		
 
 		return $result;
 	}
 	// create shared folder for company
 
-	protected function createSharedFolder(array $fields): int
+	protected function createSharedFolder(array $fields): void
 	{
 		if(!Loader::includeModule('disk'))
 		{
-			return false;
+			return;
 		}
 
 		$folder = \Bitrix\Disk\Folder::loadById($fields['SHARED_FOLDER_ID']);
@@ -1700,7 +1705,7 @@ class CAllCrmCompany
 			], $GLOBALS['USER']->getId());
 		}
 
-		return $folder->getId();
+		
 	}
 
 	protected function createPullItem(array $data = []): array
