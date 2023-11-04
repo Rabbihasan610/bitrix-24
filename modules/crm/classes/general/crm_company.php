@@ -1664,7 +1664,7 @@ class CAllCrmCompany
 			);
 		}
 
-		//self::createSharedFolder($arFields);
+		self::createSharedFolder($arFields);
 
 		return $result;
 	}
@@ -1674,29 +1674,14 @@ class CAllCrmCompany
 
 	public function createSharedFolder(array $fields): void
 	{
-	
+		
 		if (!Loader::includeModule('disk'))
 		{
 			return;
 		}
 
-		$folder = \Bitrix\Disk\Folder::loadById($fields['SHARED_FOLDER_ID']);
+		$folder = new Folder($fields['TITLE'], $fields['ASSIGNED_BY_ID']);
 
-		if ($folder)
-		{
-			return;
-		}
-
-		$securityContext = $folder->getStorage()->getCurrentUserSecurityContext();
-		$folder->deleteTree($securityContext);
-
-		$folder = $folder->addSubFolder([
-			'NAME' => $fields['TITLE'],
-			'CREATED_BY' => $fields['ASSIGNED_BY_ID'],
-			'UPDATED_BY' => $fields['ASSIGNED_BY_ID'],
-		], $securityContext);
-
-	
 		$folderId = $folder->getId();
 		// save folder id to company
 
