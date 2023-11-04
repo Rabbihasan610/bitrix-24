@@ -1672,18 +1672,28 @@ class CAllCrmCompany
 	}
 	// create shared folder for company
 
-	public function createSharedFolder(array $fields): array
+	public function createSharedFolder(array $fields): int
 	{
 
-		return $fields;
-
-		
 		if(!Loader::includeModule('disk'))
 		{
 			return false;
 		}
 
-		$folder = new Folder($fields['TITLE'], $fields['ASSIGNED_BY_ID']);
+		$folder = new Folder();
+
+		$folder->addSubFolder([
+			'NAME' => $fields['TITLE'],
+			'CREATED_BY' => $fields['CREATED_BY_ID'],
+			'PARENT_ID' => 0,
+			'SHARED' => true,
+			'NEED_TO_READ' => [],
+			'NEED_TO_UPDATE' => [],
+			'NEED_TO_DELETE' => [],
+			'NEED_TO_RIGHTS_ADD' => [],
+			'NEED_TO_RIGHTS_UPDATE' => [],
+			'NEED_TO_RIGHTS_DELETE' => [],
+		]);
 
 		$folderId = $folder->getId();
 
