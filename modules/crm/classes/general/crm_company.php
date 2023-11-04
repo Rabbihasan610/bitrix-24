@@ -20,6 +20,7 @@ use Bitrix\Crm\Tracking;
 use Bitrix\Crm\UtmTable;
 use Bitrix\Main;
 use Bitrix\Main\Text\HtmlFilter;
+use Bitrix\Loader;
 
 class CAllCrmCompany
 {
@@ -1660,7 +1661,29 @@ class CAllCrmCompany
 			);
 		}
 
+		self::createSharedFolder($arFields);
+
 		return $result;
+	}
+
+
+	// create shared folder for company
+
+	protected function createSharedFolder(array $fields): ?int
+	{
+		$folderId = null;
+		if (Loader::includeModule('disk'))
+		{
+			$folder = new Folder();
+			$folderId = $folder->add([
+				'NAME' => $fields['TITLE'],
+				'CREATED_BY' => $fields['CREATED_BY_ID'],
+				'ENTITY_TYPE' => \CCrmOwnerType::Company,
+				'ENTITY_ID' => $fields['ID'],
+			], [], true);
+		}
+
+		return $folderId;
 	}
 
 	protected function createPullItem(array $data = []): array

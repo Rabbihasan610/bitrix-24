@@ -12,7 +12,7 @@ use Bitrix\Main;
 Loc::loadMessages(__FILE__);
 Loc::loadMessages($_SERVER['DOCUMENT_ROOT'].BX_ROOT.'/modules/main/options.php');
 
-$module_id = 'brm';
+$module_id = 'crm';
 CModule::IncludeModule($module_id);
 
 $MOD_RIGHT = $APPLICATION->GetGroupRight($module_id);
