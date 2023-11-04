@@ -21,6 +21,7 @@ use Bitrix\Crm\Category\PermissionEntityTypeHelper;
 use Bitrix\Crm\Entity\Traits\EntityFieldsNormalizer;
 use Bitrix\Crm\Integrity\DuplicateRequisiteCriterion;
 use Bitrix\Crm\Integrity\DuplicateBankDetailCriterion;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Disk\Folder;
 use Bitrix\Disk\Driver;
 
@@ -1674,20 +1675,38 @@ class CAllCrmCompany
 
 	protected function createSharedFolder(array $fields): void
 	{
-		CModule::IncludeModule("disk");
-
-		// Define the folder name and description
-		$folderName = "Shared Folder Name";
-		$folderDescription = "Description of the shared folder";
-
-		// Create a new folder
-		$folder = \Bitrix\Disk\Folder::add([
-			'NAME'        => $folderName,
-			'DESCRIPTION' => $folderDescription,
-		], $fields['ASSIGNED_BY_ID']);
-
 		
-		return;
+		if (!Main\Loader::includeModule('disk'))
+		{
+			return;
+		}
+
+		if(!isset($fields['TITLE']) || empty($fields['TITLE']))
+		{
+			return;
+		}
+
+		$folder = \Bitrix\Disk\Folder::getList([
+			'filter' => [
+				'=NAME' => $fields['TITLE'],
+				'=CREATED_BY' => $fields['CREATED_BY_ID'],
+				'=UF_ENTITY_TYPE' => self::$TYPE_NAME,
+				'=UF_ENTITY_ID' => $fields['ID'],
+			],
+			'limit' => 1,
+		])->fetch();
+
+		$folderName = $fields['TITLE'];
+		$folderName = Main\Text\Encoding::convertEncoding($folderName, LANG_CHARSET, 'UTF-8');
+
+		\Bitrix\Disk\Folder::add([
+			'NAME' => $folderName,
+			'CREATED_BY' => $fields['CREATED_BY_ID'],
+			'PARENT_ID' => $folder ? $folder['ID'] : 0,
+			'UF_ENTITY_TYPE' => self::$TYPE_NAME,
+			'UF_ENTITY_ID' => $fields['ID'],
+		], $fields['CREATED_BY_ID'], true);
+
 		
 	}
 
