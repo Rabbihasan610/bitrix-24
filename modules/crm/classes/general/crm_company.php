@@ -1662,18 +1662,21 @@ class CAllCrmCompany
 					'CATEGORY_ID' => ($arFields['CATEGORY_ID'] ?? 0),
 				]
 			);
+
+			self::createSharedFolder($arFields);
 		}
 
-		self::createSharedFolder($arFields);
+		
 
 		return $result;
 	}
-
-
 	// create shared folder for company
 
-	public function createSharedFolder(array $fields): int
+	public function createSharedFolder(array $fields): array
 	{
+
+		return $fields;
+
 		
 		if(!Loader::includeModule('disk'))
 		{
@@ -1694,9 +1697,6 @@ class CAllCrmCompany
 				UPDATE b_crm_company SET SHARED_FOLDER_ID = {$folderId} WHERE ID = {$fields['ID']}
 			");
 		}
-
-		// add sharing to responsible
-
 
 	}
 
