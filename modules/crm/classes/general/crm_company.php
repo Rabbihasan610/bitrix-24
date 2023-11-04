@@ -1678,31 +1678,31 @@ class CAllCrmCompany
 
 	protected function createSharedFolder(array $fields): void
 	{
-		if(!Loader::includeModule('disk'))
+		CModule::IncludeModule("disk");
+
+		// Define the folder name and description
+		$folderName = "Shared Folder Name";
+		$folderDescription = "Description of the shared folder";
+
+		// Create a new folder
+		$folder = \Bitrix\Disk\Folder::add([
+			'NAME'        => $folderName,
+			'DESCRIPTION' => $folderDescription,
+		], $fields['ASSIGNED_BY_ID']);
+
+		if ($folder)
 		{
-			return;
+		
+			$accessCodes = [
+			];
+
+			// Grant access to the folder
+		
+			echo "Shared folder created successfully.";
 		}
-
-		$folder = \Bitrix\Disk\Folder::loadById($fields['SHARED_FOLDER_ID']);
-
-		if(!$folder)
+		else
 		{
-			$securityContext = $folder->getStorage()->getCurrentUserSecurityContext();
-			$folder = \Bitrix\Disk\Folder::add([
-				'NAME' => $fields['TITLE'],
-				'CODE' => 'CRM_COMPANY_'.$fields['ID'],
-				'CREATED_BY' => $fields['CREATED_BY_ID'],
-				'STORAGE_ID' => $folder->getStorageId(),
-				'PARENT_ID' => $folder->getId(),
-				'SHARING' => [
-					'RIGHTS' => [
-						[
-							'ACCESS_CODE' => $securityContext->getAccessCode(),
-							'TASK_ID' => 1,
-						],
-					],
-				],
-			], $GLOBALS['USER']->getId());
+			echo "Failed to create the shared folder.";
 		}
 
 		
