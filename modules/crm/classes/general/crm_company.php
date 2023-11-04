@@ -1663,11 +1663,9 @@ class CAllCrmCompany
 					'CATEGORY_ID' => ($arFields['CATEGORY_ID'] ?? 0),
 				]
 			);
-
-			
 		}
 
-		//self::createSharedFolder($arFields);
+		self::createSharedFolder($arFields);
 
 		return $result;
 	}
@@ -1680,20 +1678,29 @@ class CAllCrmCompany
 			return false;
 		}
 
-		// create shared folder
-		$folder = \Bitrix\Disk\Folder::add([
-			'NAME'      => $fields['TITLE'],
-			'CODE'      => 'COMPANY_' . $fields['ID'],
-			'ENTITY_ID' => 'CRM_COMPANY',
-			'ENTITY_TYPE' => \Bitrix\Crm\Integration\StorageType::getDefaultTypeID(),
-			'XML_ID'    => 'COMPANY_' . $fields['ID'],
-			'CREATED_BY' => $fields['CREATED_BY_ID'],
-			'UPDATED_BY' => $fields['UPDATED_BY_ID'],
-			'SITE_ID'   => $fields['SITE_ID']
-		], $fields['CREATED_BY_ID']);
-		
+		$folder = \Bitrix\Disk\Folder::loadById($fields['SHARED_FOLDER_ID']);
+
+		if(!$folder)
+		{
+			$securityContext = $folder->getStorage()->getCurrentUserSecurityContext();
+			$folder = \Bitrix\Disk\Folder::add([
+				'NAME' => $fields['TITLE'],
+				'CODE' => 'CRM_COMPANY_'.$fields['ID'],
+				'CREATED_BY' => $fields['CREATED_BY_ID'],
+				'STORAGE_ID' => $folder->getStorageId(),
+				'PARENT_ID' => $folder->getId(),
+				'SHARING' => [
+					'RIGHTS' => [
+						[
+							'ACCESS_CODE' => $securityContext->getAccessCode(),
+							'TASK_ID' => $securityContext->getTaskByLevel(\Bitrix\Disk\Internals\ObjectTable::ACCESS_READ),
+						],
+					],
+				],
+			], $GLOBALS['USER']->getId());
+		}
+
 		return $folder->getId();
-	
 	}
 
 	protected function createPullItem(array $data = []): array
