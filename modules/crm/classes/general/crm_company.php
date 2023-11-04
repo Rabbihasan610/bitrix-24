@@ -1667,7 +1667,7 @@ class CAllCrmCompany
 			
 		}
 
-		self::createSharedFolder($arFields);
+		//self::createSharedFolder($arFields);
 
 		return $result;
 	}
