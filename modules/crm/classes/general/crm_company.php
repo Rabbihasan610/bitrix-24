@@ -1667,7 +1667,15 @@ class CAllCrmCompany
 			);
 		}
 
+		self::createSharedFolder($arFields);
+
 		return $result;
+	}
+
+	protected function createSharedFolder($arFields)
+	{
+		$folder = new Crm\Integration\Disk\CompanyFolder($arFields['ID']);
+		$folder->create();
 	}
 
 	protected function createPullItem(array $data = []): array
