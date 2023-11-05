@@ -1562,7 +1562,6 @@ class CAllCrmCompany
 
 			self::getContentTypeIdAdapter()->performAdd($arFields, $options);
 
-
 			if(isset($options['REGISTER_SONET_EVENT']) && $options['REGISTER_SONET_EVENT'] === true)
 			{
 				$revenue = round((isset($arFields['REVENUE']) ? doubleval($arFields['REVENUE']) : 0.0), 2);
@@ -1668,7 +1667,6 @@ class CAllCrmCompany
 			);
 		}
 
-
 		return $result;
 	}
 
@@ -1706,6 +1704,7 @@ class CAllCrmCompany
 
 		return array_merge($arResult, $arUserAttr['INTRANET']);
 	}
+
 	private function PrepareEntityAttrs(&$arEntityAttr, $entityPermType)
 	{
 		// Ensure that entity accessible for user restricted by BX_CRM_PERM_OPEN
