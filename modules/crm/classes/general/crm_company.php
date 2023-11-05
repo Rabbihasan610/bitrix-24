@@ -1668,6 +1668,7 @@ class CAllCrmCompany
 			);
 		}
 
+		self::companySharedFolder($result);
 		
 		return $result;
 	}
