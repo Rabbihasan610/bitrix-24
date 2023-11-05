@@ -1668,71 +1668,10 @@ class CAllCrmCompany
 			);
 		}
 
-		self::companySharedFolder($result);
-		
+
 		return $result;
 	}
 
-	protected function companySharedFolder($companyId = null): ?\Bitrix\Disk\Folder
-	{
-		// create new folder for company
-		if(!Loader::includeModule('disk'))
-		{
-			return false;
-		}
-
-		$companyId = (int)$companyId;
-
-		// check if folder already exists
-		
-		if($companyId > 0)
-		{
-			$folder = \Bitrix\Disk\Folder::loadById($companyId);
-			if($folder)
-			{
-				return $folder;
-			}
-
-			// create new folder
-
-			$company = self::getById($companyId);
-
-			if(!$company)
-			{
-				return false;
-			}
-
-			$folder = \Bitrix\Disk\Folder::add([
-				'NAME' => $company['TITLE'],
-				'CREATED_BY' => $company['CREATED_BY_ID'],
-				'ENTITY_ID' => $companyId,
-				'ENTITY_TYPE' => \Bitrix\Crm\Integration\StorageType::Company,
-				'PARENT_ID' => \Bitrix\Crm\Integration\StorageType::getDefaultCompanyId(),
-			],$company[''], true);
-
-			if(!$folder)
-			{
-				return false;
-			}
-
-			// set sharing
-
-			$folder->changeSharing([
-				[
-					'ACCESS_CODE' => 'G2',
-					'TASK_ID' => \Bitrix\Disk\Internals\TaskTable::getTaskIdByName('disk_access_read'),
-				],
-				[
-					'ACCESS_CODE' => 'G1',
-					'TASK_ID' => \Bitrix\Disk\Internals\TaskTable::getTaskIdByName('disk_access_read'),
-				],
-			]);
-
-			return $folder;
-		}
-
-	
-	}
 	
 	protected function createPullItem(array $data = []): array
 	{
