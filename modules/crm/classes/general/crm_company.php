@@ -1207,491 +1207,486 @@ class CAllCrmCompany
 		return !empty($result) ? $result : false;
 	}
 
-	// public function Add(array &$arFields, $bUpdateSearch = true, $options = array())
-	// {
-
-	// 	global $DB;
-
-	// 	if(!is_array($options))
-	// 	{
-	// 		$options = [];
-	// 	}
-
-	// 	$this->LAST_ERROR = '';
-	// 	$this->checkExceptions = [];
-
-	// 	if (isset($arFields['IS_MY_COMPANY']) && $arFields['IS_MY_COMPANY'] === 'Y')
-	// 	{
-	// 		$arFields['IS_MY_COMPANY'] = 'Y';
-	// 	}
-	// 	else
-	// 	{
-	// 		$arFields['IS_MY_COMPANY'] = 'N';
-	// 	}
-
-	// 	if ($this->isUseOperation() && ($arFields['IS_MY_COMPANY'] !== 'Y'))
-	// 	{
-	// 		return $this->getCompatibilityAdapter()->performAdd($arFields, $options);
-	// 	}
-
-	// 	$isRestoration = isset($options['IS_RESTORATION']) && $options['IS_RESTORATION'];
-
-	// 	// ALLOW_SET_SYSTEM_FIELDS is deprecated temporary option. It will be removed soon! Do not use it!
-	// 	$allowSetSystemFields = $options['ALLOW_SET_SYSTEM_FIELDS'] ?? $isRestoration;
-
-	// 	$userID = isset($options['CURRENT_USER'])
-	// 		? (int)$options['CURRENT_USER'] : CCrmSecurityHelper::GetCurrentUserID();
-
-	// 	if($userID <= 0 && $this->bCheckPermission)
-	// 	{
-	// 		$arFields['RESULT_MESSAGE'] = $this->LAST_ERROR = GetMessage('CRM_PERMISSION_USER_NOT_DEFINED');
-	// 		return false;
-	// 	}
-
-	// 	unset($arFields['ID']);
-
-	// 	if(!($allowSetSystemFields && isset($arFields['DATE_CREATE'])))
-	// 	{
-	// 		unset($arFields['DATE_CREATE']);
-	// 		$arFields['~DATE_CREATE'] = $DB->CurrentTimeFunction();
-	// 	}
-
-	// 	if(!($allowSetSystemFields && isset($arFields['DATE_MODIFY'])))
-	// 	{
-	// 		unset($arFields['DATE_MODIFY']);
-	// 		$arFields['~DATE_MODIFY'] = $DB->CurrentTimeFunction();
-	// 	}
-
-	// 	if($userID > 0)
-	// 	{
-	// 		if(!(isset($arFields['CREATED_BY_ID']) && $arFields['CREATED_BY_ID'] > 0))
-	// 		{
-	// 			$arFields['CREATED_BY_ID'] = $userID;
-	// 		}
-
-	// 		if(!(isset($arFields['MODIFY_BY_ID']) && $arFields['MODIFY_BY_ID'] > 0))
-	// 		{
-	// 			$arFields['MODIFY_BY_ID'] = $userID;
-	// 		}
-
-	// 		if(!(isset($arFields['ASSIGNED_BY_ID']) && $arFields['ASSIGNED_BY_ID'] > 0))
-	// 		{
-	// 			$arFields['ASSIGNED_BY_ID'] = $userID;
-	// 		}
-	// 	}
-
-	// 	if (isset($arFields['REVENUE']))
-	// 		$arFields['REVENUE'] = floatval($arFields['REVENUE']);
-
-	// 	$arFields['CATEGORY_ID'] = $arFields['CATEGORY_ID'] ?? 0;
-
-	// 	if(!isset($arFields['TITLE']) || trim($arFields['TITLE']) === '')
-	// 	{
-	// 		$arFields['TITLE'] = self::GetAutoTitle();
-	// 	}
-
-	// 	$fields = self::GetUserFields();
-	// 	$this->fillEmptyFieldValues($arFields, $fields);
-
-	// 	if (!$this->CheckFields($arFields, false, $options))
-	// 	{
-	// 		$result = false;
-	// 		$arFields['RESULT_MESSAGE'] = &$this->LAST_ERROR;
-	// 	}
-	// 	else
-	// 	{
-	// 		$arAttr = [];
-	// 		if (!empty($arFields['OPENED']))
-	// 		{
-	// 			$arAttr['OPENED'] = $arFields['OPENED'];
-	// 		}
-
-	// 		//todo isMyCompany should be passed as attribute to permissions
-	// 		if ($arFields['IS_MY_COMPANY'] === 'Y')
-	// 		{
-	// 			$arAttr['IS_MY_COMPANY'] = $arFields['IS_MY_COMPANY'];
-	// 		}
-
-	// 		$permissionEntityType = (new PermissionEntityTypeHelper(CCrmOwnerType::Company))
-	// 			->getPermissionEntityTypeForCategory((int)$arFields['CATEGORY_ID'])
-	// 		;
-
-	// 		$sPermission = 'ADD';
-	// 		if (isset($arFields['PERMISSION']))
-	// 		{
-	// 			if ($arFields['PERMISSION'] == 'IMPORT')
-	// 				$sPermission = 'IMPORT';
-	// 			unset($arFields['PERMISSION']);
-	// 		}
-
-	// 		if($this->bCheckPermission)
-	// 		{
-	// 			$arEntityAttr = self::BuildEntityAttr($userID, $arAttr);
-	// 			$userPerms =  $userID == CCrmPerms::GetCurrentUserID() ? $this->cPerms : CCrmPerms::GetUserPermissions($userID);
-	// 			$sEntityPerm = $userPerms->GetPermType($permissionEntityType, $sPermission, $arEntityAttr);
-	// 			if ($sEntityPerm == BX_CRM_PERM_NONE)
-	// 			{
-	// 				$this->LAST_ERROR = GetMessage('CRM_PERMISSION_DENIED');
-	// 				$arFields['RESULT_MESSAGE'] = &$this->LAST_ERROR;
-	// 				return false;
-	// 			}
-
-	// 			$assignedByID = intval($arFields['ASSIGNED_BY_ID']);
-	// 			if ($sEntityPerm == BX_CRM_PERM_SELF && $assignedByID != $userID)
-	// 			{
-	// 				$arFields['ASSIGNED_BY_ID'] = $userID;
-	// 			}
-	// 			if ($sEntityPerm == BX_CRM_PERM_OPEN && $userID == $assignedByID)
-	// 			{
-	// 				$arFields['OPENED'] = 'Y';
-	// 			}
-	// 		}
-
-	// 		$assignedByID = intval($arFields['ASSIGNED_BY_ID']);
-	// 		$arEntityAttr = self::BuildEntityAttr($assignedByID, $arAttr);
-	// 		$userPerms =  $assignedByID == CCrmPerms::GetCurrentUserID() ? $this->cPerms : CCrmPerms::GetUserPermissions($assignedByID);
-	// 		$sEntityPerm = $userPerms->GetPermType($permissionEntityType, $sPermission, $arEntityAttr);
-	// 		$this->PrepareEntityAttrs($arEntityAttr, $sEntityPerm);
-
-	// 		//Statistics & History -->
-	// 		if(isset($arFields['LEAD_ID']) && $arFields['LEAD_ID'] > 0)
-	// 		{
-	// 			Bitrix\Crm\Statistics\LeadConversionStatisticsEntry::processBindingsChange($arFields['LEAD_ID']);
-	// 		}
-	// 		//<-- Statistics & History
-
-	// 		if(isset($arFields['LOGO'])
-	// 			&& is_array($arFields['LOGO'])
-	// 			&& CFile::CheckImageFile($arFields['LOGO']) == '')
-	// 		{
-	// 			$arFields['LOGO']['MODULE_ID'] = 'crm';
-	// 			CFile::SaveForDB($arFields, 'LOGO', 'crm');
-	// 		}
-
-	// 		//region Setup HAS_EMAIL & HAS_PHONE & HAS_IMOL fields
-	// 		$arFields['HAS_EMAIL'] = $arFields['HAS_PHONE'] = $arFields['HAS_IMOL'] = 'N';
-	// 		if(isset($arFields['FM']) && is_array($arFields['FM']))
-	// 		{
-	// 			if(CCrmFieldMulti::HasValues($arFields['FM'], CCrmFieldMulti::EMAIL))
-	// 			{
-	// 				$arFields['HAS_EMAIL'] = 'Y';
-	// 			}
-
-	// 			if(CCrmFieldMulti::HasValues($arFields['FM'], CCrmFieldMulti::PHONE))
-	// 			{
-	// 				$arFields['HAS_PHONE'] = 'Y';
-	// 			}
-
-	// 			if(CCrmFieldMulti::HasImolValues($arFields['FM']))
-	// 			{
-	// 				$arFields['HAS_IMOL'] = 'Y';
-	// 			}
-	// 		}
-	// 		//endregion
-
-	// 		self::getLastActivityAdapter()->performAdd($arFields, $options);
-
-	// 		$beforeEvents = GetModuleEvents('crm', 'OnBeforeCrmCompanyAdd');
-	// 		while ($arEvent = $beforeEvents->Fetch())
-	// 		{
-	// 			if(ExecuteModuleEventEx($arEvent, array(&$arFields)) === false)
-	// 			{
-	// 				if(isset($arFields['RESULT_MESSAGE']))
-	// 				{
-	// 					$this->LAST_ERROR = $arFields['RESULT_MESSAGE'];
-	// 				}
-	// 				else
-	// 				{
-	// 					$this->LAST_ERROR = GetMessage('CRM_COMPANY_CREATION_CANCELED', array('#NAME#' => $arEvent['TO_NAME']));
-	// 					$arFields['RESULT_MESSAGE'] = &$this->LAST_ERROR;
-	// 				}
-	// 				return false;
-	// 			}
-	// 		}
-
-	// 		unset($arFields['ID']);
-
-	// 		$this->normalizeEntityFields($arFields);
-	// 		$ID = (int) $DB->Add(self::TABLE_NAME, $arFields, [], 'FILE: '.__FILE__.'<br /> LINE: '.__LINE__);
-
-	// 		//Append ID to TITLE if required
-	// 		if($ID > 0 && $arFields['TITLE'] === self::GetAutoTitle())
-	// 		{
-	// 			$arFields['TITLE'] = self::GetAutoTitle($ID);
-	// 			$sUpdate = $DB->PrepareUpdate('b_crm_company', array('TITLE' => $arFields['TITLE']));
-	// 			if($sUpdate <> '')
-	// 			{
-	// 				$DB->Query(
-	// 					"UPDATE b_crm_company SET {$sUpdate} WHERE ID = {$ID}",
-	// 					false,
-	// 					'FILE: '.__FILE__.'<br /> LINE: '.__LINE__
-	// 				);
-	// 			};
-	// 		}
-
-	// 		$result = $arFields['ID'] = $ID;
-
-	// 		if(defined('BX_COMP_MANAGED_CACHE'))
-	// 		{
-	// 			$GLOBALS['CACHE_MANAGER']->CleanDir('b_crm_company');
-	// 		}
-
-	// 		$securityRegisterOptions = (new \Bitrix\Crm\Security\Controller\RegisterOptions())
-	// 			->setEntityAttributes($arEntityAttr)
-	// 		;
-	// 		Crm\Security\Manager::getEntityController(CCrmOwnerType::Company)
-	// 			->register($permissionEntityType, $ID, $securityRegisterOptions)
-	// 		;
-
-	// 		//Statistics & History -->
-	// 		Bitrix\Crm\Statistics\CompanyGrowthStatisticEntry::register($ID, $arFields);
-	// 		//<-- Statistics & History
-
-	// 		if($isRestoration)
-	// 		{
-	// 			Bitrix\Crm\Timeline\CompanyController::getInstance()->onRestore($ID, array('FIELDS' => $arFields));
-	// 		}
-	// 		else
-	// 		{
-	// 			Bitrix\Crm\Timeline\CompanyController::getInstance()->onCreate($ID, array('FIELDS' => $arFields));
-	// 		}
-
-	// 		EntityAddress::register(
-	// 			CCrmOwnerType::Company,
-	// 			$ID,
-	// 			EntityAddressType::Primary,
-	// 			array(
-	// 				'ADDRESS_1' => isset($arFields['ADDRESS']) ? $arFields['ADDRESS'] : null,
-	// 				'ADDRESS_2' => isset($arFields['ADDRESS_2']) ? $arFields['ADDRESS_2'] : null,
-	// 				'CITY' => isset($arFields['ADDRESS_CITY']) ? $arFields['ADDRESS_CITY'] : null,
-	// 				'POSTAL_CODE' => isset($arFields['ADDRESS_POSTAL_CODE']) ? $arFields['ADDRESS_POSTAL_CODE'] : null,
-	// 				'REGION' => isset($arFields['ADDRESS_REGION']) ? $arFields['ADDRESS_REGION'] : null,
-	// 				'PROVINCE' => isset($arFields['ADDRESS_PROVINCE']) ? $arFields['ADDRESS_PROVINCE'] : null,
-	// 				'COUNTRY' => isset($arFields['ADDRESS_COUNTRY']) ? $arFields['ADDRESS_COUNTRY'] : null,
-	// 				'COUNTRY_CODE' => isset($arFields['ADDRESS_COUNTRY_CODE']) ? $arFields['ADDRESS_COUNTRY_CODE'] : null,
-	// 				'LOC_ADDR_ID' => isset($arFields['ADDRESS_LOC_ADDR_ID']) ? (int)$arFields['ADDRESS_LOC_ADDR_ID'] : 0,
-	// 				'LOC_ADDR' => isset($arFields['ADDRESS_LOC_ADDR']) ? $arFields['ADDRESS_LOC_ADDR'] : null
-	// 			)
-	// 		);
-
-	// 		EntityAddress::register(
-	// 			CCrmOwnerType::Company,
-	// 			$ID,
-	// 			EntityAddressType::Registered,
-	// 			array(
-	// 				'ADDRESS_1' => isset($arFields['REG_ADDRESS']) ? $arFields['REG_ADDRESS'] : null,
-	// 				'ADDRESS_2' => isset($arFields['REG_ADDRESS_2']) ? $arFields['REG_ADDRESS_2'] : null,
-	// 				'CITY' => isset($arFields['REG_ADDRESS_CITY']) ? $arFields['REG_ADDRESS_CITY'] : null,
-	// 				'POSTAL_CODE' => isset($arFields['REG_ADDRESS_POSTAL_CODE']) ? $arFields['REG_ADDRESS_POSTAL_CODE'] : null,
-	// 				'REGION' => isset($arFields['REG_ADDRESS_REGION']) ? $arFields['REG_ADDRESS_REGION'] : null,
-	// 				'PROVINCE' => isset($arFields['REG_ADDRESS_PROVINCE']) ? $arFields['REG_ADDRESS_PROVINCE'] : null,
-	// 				'COUNTRY' => isset($arFields['REG_ADDRESS_COUNTRY']) ? $arFields['REG_ADDRESS_COUNTRY'] : null,
-	// 				'COUNTRY_CODE' => isset($arFields['REG_ADDRESS_COUNTRY_CODE']) ? $arFields['REG_ADDRESS_COUNTRY_CODE'] : null,
-	// 				'LOC_ADDR_ID' => isset($arFields['REG_ADDRESS_LOC_ADDR_ID']) ? (int)$arFields['REG_ADDRESS_LOC_ADDR_ID'] : 0,
-	// 				'LOC_ADDR' => isset($arFields['REG_ADDRESS_LOC_ADDR']) ? $arFields['REG_ADDRESS_LOC_ADDR'] : null
-	// 			)
-	// 		);
-
-	// 		CCrmEntityHelper::NormalizeUserFields($arFields, self::$sUFEntityID, $GLOBALS['USER_FIELD_MANAGER'], array('IS_NEW' => true));
-	// 		$GLOBALS['USER_FIELD_MANAGER']->Update(self::$sUFEntityID, $ID, $arFields);
-
-	// 		//region Duplicate communication data
-	// 		if (isset($arFields['FM']) && is_array($arFields['FM']))
-	// 		{
-	// 			$CCrmFieldMulti = new CCrmFieldMulti();
-	// 			$CCrmFieldMulti->SetFields('COMPANY', $ID, $arFields['FM']);
-	// 		}
-	// 		//endregion
-
-	// 		$duplicateCriterionRegistrar = DuplicateManager::getCriterionRegistrar(\CCrmOwnerType::Company);
-	// 		$data =
-	// 			(new Crm\Integrity\CriterionRegistrar\Data())
-	// 				->setEntityTypeId(\CCrmOwnerType::Company)
-	// 				->setEntityId($ID)
-	// 				->setCurrentFields($arFields)
-	// 		;
-	// 		$duplicateCriterionRegistrar->register($data);
-
-	// 		\Bitrix\Crm\Counter\Monitor::getInstance()->onEntityAdd(CCrmOwnerType::Company, $arFields);
-
-	// 		// tracking of entity
-	// 		Tracking\Entity::onAfterAdd(CCrmOwnerType::Company, $ID, $arFields);
-
-	// 		//region save parent relations
-	// 		Container::getInstance()->getParentFieldManager()->saveParentRelationsForIdentifier(
-	// 			new Crm\ItemIdentifier(CCrmOwnerType::Company, $ID),
-	// 			$arFields
-	// 		);
-	// 		//endregion
-
-	// 		if($bUpdateSearch)
-	// 		{
-	// 			CCrmSearch::UpdateSearch(array('ID' => $ID, 'CHECK_PERMISSIONS' => 'N'), 'COMPANY', true);
-	// 		}
-	// 		$contactBindings = null;
-	// 		if (isset($arFields['CONTACT_ID']) && is_array($arFields['CONTACT_ID']))
-	// 		{
-	// 			$contactBindings = Crm\Binding\EntityBinding::prepareEntityBindings(CCrmOwnerType::Contact, $arFields['CONTACT_ID']);
-	// 			\Bitrix\Crm\Binding\ContactCompanyTable::bindContactIDs($arFields['ID'], $arFields['CONTACT_ID']);
-	// 			if (isset($GLOBALS["USER"]))
-	// 			{
-	// 				CUserOptions::SetOption('crm', 'crm_contact_search', array('last_selected' => implode(',', $arFields['CONTACT_ID'])));
-	// 			}
-	// 		}
-
-	// 		CCrmEntityHelper::registerAdditionalTimelineEvents([
-	// 			'entityTypeId' => CCrmOwnerType::Company,
-	// 			'entityId' => $ID,
-	// 			'fieldsInfo' => static::GetFieldsInfo(),
-	// 			'previousFields' => [],
-	// 			'currentFields' => $arFields,
-	// 			'options' => $options,
-	// 			'bindings' => [
-	// 				'entityTypeId' => CCrmOwnerType::Contact,
-	// 				'previous' => [],
-	// 				'current' => $contactBindings,
-	// 			],
-	// 		]);
-
-	// 		//region Search content index
-	// 		Bitrix\Crm\Search\SearchContentBuilderFactory::create(
-	// 			CCrmOwnerType::Company
-	// 		)->build($ID, ['checkExist' => true]);
-	// 		//endregion
-
-	// 		self::getContentTypeIdAdapter()->performAdd($arFields, $options);
-
-
-	// 		if(isset($options['REGISTER_SONET_EVENT']) && $options['REGISTER_SONET_EVENT'] === true)
-	// 		{
-	// 			$revenue = round((isset($arFields['REVENUE']) ? doubleval($arFields['REVENUE']) : 0.0), 2);
-	// 			$currencyID = isset($arFields['CURRENCY_ID']) ? $arFields['CURRENCY_ID'] : '';
-	// 			if($currencyID === '')
-	// 			{
-	// 				$currencyID = CCrmCurrency::GetBaseCurrencyID();
-	// 			}
-
-	// 			$multiFields = isset($arFields['FM']) ? $arFields['FM'] : null;
-	// 			$phones = CCrmFieldMulti::ExtractValues($multiFields, 'PHONE');
-	// 			$emails = CCrmFieldMulti::ExtractValues($multiFields, 'EMAIL');
-	// 			$assignedByID = intval($arFields['ASSIGNED_BY_ID']);
-	// 			$createdByID = intval($arFields['CREATED_BY_ID']);
-
-	// 			$liveFeedFields = array(
-	// 				'USER_ID' => $createdByID,
-	// 				'ENTITY_TYPE_ID' => CCrmOwnerType::Company,
-	// 				'ENTITY_ID' => $ID,
-	// 				'TITLE' => GetMessage('CRM_COMPANY_EVENT_ADD'),
-	// 				'MESSAGE' => '',
-	// 				'PARAMS' => array(
-	// 					'TITLE' => $arFields['TITLE'],
-	// 					'LOGO_ID' => isset($arFields['LOGO']) ? $arFields['LOGO'] : '',
-	// 					'TYPE' => isset($arFields['COMPANY_TYPE']) ? $arFields['COMPANY_TYPE'] : '',
-	// 					'REVENUE' => strval($revenue),
-	// 					'CURRENCY_ID' => $currencyID,
-	// 					'PHONES' => $phones,
-	// 					'EMAILS' => $emails,
-	// 					'AUTHOR_ID' => intval($arFields['CREATED_BY_ID']),
-	// 					'RESPONSIBLE_ID' => $assignedByID
-	// 				)
-	// 			);
-
-	// 			$isUntypedCategory = (int)$arFields['CATEGORY_ID'] === 0;
-	// 			if ($isUntypedCategory && Crm\Settings\Crm::isLiveFeedRecordsGenerationEnabled())
-	// 			{
-	// 				CCrmSonetSubscription::RegisterSubscription(
-	// 					CCrmOwnerType::Company,
-	// 					$ID,
-	// 					CCrmSonetSubscriptionType::Responsibility,
-	// 					$assignedByID
-	// 				);
-	// 			}
-
-	// 			$logEventID = $isUntypedCategory
-	// 				? CCrmLiveFeed::CreateLogEvent($liveFeedFields, CCrmLiveFeedEvent::Add, ['CURRENT_USER' => $userID])
-	// 				: false;
-
-	// 			if (
-	// 				$logEventID !== false
-	// 				&& $assignedByID != $createdByID
-	// 				&& $isUntypedCategory
-	// 				&& CModule::IncludeModule("im")
-	// 			)
-	// 			{
-	// 				$url = CCrmOwnerType::GetEntityShowPath(CCrmOwnerType::Company, $ID);
-	// 				$serverName = (CMain::IsHTTPS() ? "https" : "http")."://".((defined("SITE_SERVER_NAME") && SITE_SERVER_NAME <> '') ? SITE_SERVER_NAME : COption::GetOptionString("main", "server_name", ""));
-
-	// 				$arMessageFields = array(
-	// 					"MESSAGE_TYPE" => IM_MESSAGE_SYSTEM,
-	// 					"TO_USER_ID" => $assignedByID,
-	// 					"FROM_USER_ID" => $createdByID,
-	// 					"NOTIFY_TYPE" => IM_NOTIFY_FROM,
-	// 					"NOTIFY_MODULE" => "crm",
-	// 					"LOG_ID" => $logEventID,
-	// 					//"NOTIFY_EVENT" => "company_add",
-	// 					"NOTIFY_EVENT" => "changeAssignedBy",
-	// 					"NOTIFY_TAG" => "CRM|COMPANY_RESPONSIBLE|".$ID,
-	// 					"NOTIFY_MESSAGE" => GetMessage("CRM_COMPANY_RESPONSIBLE_IM_NOTIFY", Array("#title#" => "<a href=\"".$url."\" class=\"bx-notifier-item-action\">".htmlspecialcharsbx($arFields['TITLE'])."</a>")),
-	// 					"NOTIFY_MESSAGE_OUT" => GetMessage("CRM_COMPANY_RESPONSIBLE_IM_NOTIFY", Array("#title#" => htmlspecialcharsbx($arFields['TITLE'])))." (".$serverName.$url.")"
-	// 				);
-	// 				CIMNotify::Add($arMessageFields);
-	// 			}
-	// 		}
-
-	// 		$afterEvents = GetModuleEvents('crm', 'OnAfterCrmCompanyAdd');
-	// 		while ($arEvent = $afterEvents->Fetch())
-	// 		{
-	// 			ExecuteModuleEventEx($arEvent, array(&$arFields));
-	// 		}
-
-	// 		if(isset($arFields['ORIGIN_ID']) && $arFields['ORIGIN_ID'] !== '')
-	// 		{
-	// 			$afterEvents = GetModuleEvents('crm', 'OnAfterExternalCrmCompanyAdd');
-	// 			while ($arEvent = $afterEvents->Fetch())
-	// 			{
-	// 				ExecuteModuleEventEx($arEvent, array(&$arFields));
-	// 			}
-	// 		}
-	// 	}
-
-	// 	if ($result)
-	// 	{
-	// 		$item = $this->createPullItem($arFields);
-	// 		Crm\Integration\PullManager::getInstance()->sendItemAddedEvent(
-	// 			$item,
-	// 			[
-	// 				'TYPE' => self::$TYPE_NAME,
-	// 				'SKIP_CURRENT_USER' => ($userID !== 0),
-	// 				'CATEGORY_ID' => ($arFields['CATEGORY_ID'] ?? 0),
-	// 			]
-	// 		);
-	// 	}
-
-	// 	self::createSharedFolder($arFields, $options);
-
-	// 	return $result;
-	// }
+	public function Add(array &$arFields, $bUpdateSearch = true, $options = array())
+	{
+
+		global $DB;
+
+		if(!is_array($options))
+		{
+			$options = [];
+		}
+
+		$this->LAST_ERROR = '';
+		$this->checkExceptions = [];
+
+		if (isset($arFields['IS_MY_COMPANY']) && $arFields['IS_MY_COMPANY'] === 'Y')
+		{
+			$arFields['IS_MY_COMPANY'] = 'Y';
+		}
+		else
+		{
+			$arFields['IS_MY_COMPANY'] = 'N';
+		}
+
+		if ($this->isUseOperation() && ($arFields['IS_MY_COMPANY'] !== 'Y'))
+		{
+			return $this->getCompatibilityAdapter()->performAdd($arFields, $options);
+		}
+
+		$isRestoration = isset($options['IS_RESTORATION']) && $options['IS_RESTORATION'];
+
+		// ALLOW_SET_SYSTEM_FIELDS is deprecated temporary option. It will be removed soon! Do not use it!
+		$allowSetSystemFields = $options['ALLOW_SET_SYSTEM_FIELDS'] ?? $isRestoration;
+
+		$userID = isset($options['CURRENT_USER'])
+			? (int)$options['CURRENT_USER'] : CCrmSecurityHelper::GetCurrentUserID();
+
+		if($userID <= 0 && $this->bCheckPermission)
+		{
+			$arFields['RESULT_MESSAGE'] = $this->LAST_ERROR = GetMessage('CRM_PERMISSION_USER_NOT_DEFINED');
+			return false;
+		}
+
+		unset($arFields['ID']);
+
+		if(!($allowSetSystemFields && isset($arFields['DATE_CREATE'])))
+		{
+			unset($arFields['DATE_CREATE']);
+			$arFields['~DATE_CREATE'] = $DB->CurrentTimeFunction();
+		}
+
+		if(!($allowSetSystemFields && isset($arFields['DATE_MODIFY'])))
+		{
+			unset($arFields['DATE_MODIFY']);
+			$arFields['~DATE_MODIFY'] = $DB->CurrentTimeFunction();
+		}
+
+		if($userID > 0)
+		{
+			if(!(isset($arFields['CREATED_BY_ID']) && $arFields['CREATED_BY_ID'] > 0))
+			{
+				$arFields['CREATED_BY_ID'] = $userID;
+			}
+
+			if(!(isset($arFields['MODIFY_BY_ID']) && $arFields['MODIFY_BY_ID'] > 0))
+			{
+				$arFields['MODIFY_BY_ID'] = $userID;
+			}
+
+			if(!(isset($arFields['ASSIGNED_BY_ID']) && $arFields['ASSIGNED_BY_ID'] > 0))
+			{
+				$arFields['ASSIGNED_BY_ID'] = $userID;
+			}
+		}
+
+		if (isset($arFields['REVENUE']))
+			$arFields['REVENUE'] = floatval($arFields['REVENUE']);
+
+		$arFields['CATEGORY_ID'] = $arFields['CATEGORY_ID'] ?? 0;
+
+		if(!isset($arFields['TITLE']) || trim($arFields['TITLE']) === '')
+		{
+			$arFields['TITLE'] = self::GetAutoTitle();
+		}
+
+		$fields = self::GetUserFields();
+		$this->fillEmptyFieldValues($arFields, $fields);
+
+		if (!$this->CheckFields($arFields, false, $options))
+		{
+			$result = false;
+			$arFields['RESULT_MESSAGE'] = &$this->LAST_ERROR;
+		}
+		else
+		{
+			$arAttr = [];
+			if (!empty($arFields['OPENED']))
+			{
+				$arAttr['OPENED'] = $arFields['OPENED'];
+			}
+
+			//todo isMyCompany should be passed as attribute to permissions
+			if ($arFields['IS_MY_COMPANY'] === 'Y')
+			{
+				$arAttr['IS_MY_COMPANY'] = $arFields['IS_MY_COMPANY'];
+			}
+
+			$permissionEntityType = (new PermissionEntityTypeHelper(CCrmOwnerType::Company))
+				->getPermissionEntityTypeForCategory((int)$arFields['CATEGORY_ID'])
+			;
+
+			$sPermission = 'ADD';
+			if (isset($arFields['PERMISSION']))
+			{
+				if ($arFields['PERMISSION'] == 'IMPORT')
+					$sPermission = 'IMPORT';
+				unset($arFields['PERMISSION']);
+			}
+
+			if($this->bCheckPermission)
+			{
+				$arEntityAttr = self::BuildEntityAttr($userID, $arAttr);
+				$userPerms =  $userID == CCrmPerms::GetCurrentUserID() ? $this->cPerms : CCrmPerms::GetUserPermissions($userID);
+				$sEntityPerm = $userPerms->GetPermType($permissionEntityType, $sPermission, $arEntityAttr);
+				if ($sEntityPerm == BX_CRM_PERM_NONE)
+				{
+					$this->LAST_ERROR = GetMessage('CRM_PERMISSION_DENIED');
+					$arFields['RESULT_MESSAGE'] = &$this->LAST_ERROR;
+					return false;
+				}
+
+				$assignedByID = intval($arFields['ASSIGNED_BY_ID']);
+				if ($sEntityPerm == BX_CRM_PERM_SELF && $assignedByID != $userID)
+				{
+					$arFields['ASSIGNED_BY_ID'] = $userID;
+				}
+				if ($sEntityPerm == BX_CRM_PERM_OPEN && $userID == $assignedByID)
+				{
+					$arFields['OPENED'] = 'Y';
+				}
+			}
+
+			$assignedByID = intval($arFields['ASSIGNED_BY_ID']);
+			$arEntityAttr = self::BuildEntityAttr($assignedByID, $arAttr);
+			$userPerms =  $assignedByID == CCrmPerms::GetCurrentUserID() ? $this->cPerms : CCrmPerms::GetUserPermissions($assignedByID);
+			$sEntityPerm = $userPerms->GetPermType($permissionEntityType, $sPermission, $arEntityAttr);
+			$this->PrepareEntityAttrs($arEntityAttr, $sEntityPerm);
+
+			//Statistics & History -->
+			if(isset($arFields['LEAD_ID']) && $arFields['LEAD_ID'] > 0)
+			{
+				Bitrix\Crm\Statistics\LeadConversionStatisticsEntry::processBindingsChange($arFields['LEAD_ID']);
+			}
+			//<-- Statistics & History
+
+			if(isset($arFields['LOGO'])
+				&& is_array($arFields['LOGO'])
+				&& CFile::CheckImageFile($arFields['LOGO']) == '')
+			{
+				$arFields['LOGO']['MODULE_ID'] = 'crm';
+				CFile::SaveForDB($arFields, 'LOGO', 'crm');
+			}
+
+			//region Setup HAS_EMAIL & HAS_PHONE & HAS_IMOL fields
+			$arFields['HAS_EMAIL'] = $arFields['HAS_PHONE'] = $arFields['HAS_IMOL'] = 'N';
+			if(isset($arFields['FM']) && is_array($arFields['FM']))
+			{
+				if(CCrmFieldMulti::HasValues($arFields['FM'], CCrmFieldMulti::EMAIL))
+				{
+					$arFields['HAS_EMAIL'] = 'Y';
+				}
+
+				if(CCrmFieldMulti::HasValues($arFields['FM'], CCrmFieldMulti::PHONE))
+				{
+					$arFields['HAS_PHONE'] = 'Y';
+				}
+
+				if(CCrmFieldMulti::HasImolValues($arFields['FM']))
+				{
+					$arFields['HAS_IMOL'] = 'Y';
+				}
+			}
+			//endregion
+
+			self::getLastActivityAdapter()->performAdd($arFields, $options);
+
+			$beforeEvents = GetModuleEvents('crm', 'OnBeforeCrmCompanyAdd');
+			while ($arEvent = $beforeEvents->Fetch())
+			{
+				if(ExecuteModuleEventEx($arEvent, array(&$arFields)) === false)
+				{
+					if(isset($arFields['RESULT_MESSAGE']))
+					{
+						$this->LAST_ERROR = $arFields['RESULT_MESSAGE'];
+					}
+					else
+					{
+						$this->LAST_ERROR = GetMessage('CRM_COMPANY_CREATION_CANCELED', array('#NAME#' => $arEvent['TO_NAME']));
+						$arFields['RESULT_MESSAGE'] = &$this->LAST_ERROR;
+					}
+					return false;
+				}
+			}
+
+			unset($arFields['ID']);
+
+			$this->normalizeEntityFields($arFields);
+			$ID = (int) $DB->Add(self::TABLE_NAME, $arFields, [], 'FILE: '.__FILE__.'<br /> LINE: '.__LINE__);
+
+			//Append ID to TITLE if required
+			if($ID > 0 && $arFields['TITLE'] === self::GetAutoTitle())
+			{
+				$arFields['TITLE'] = self::GetAutoTitle($ID);
+				$sUpdate = $DB->PrepareUpdate('b_crm_company', array('TITLE' => $arFields['TITLE']));
+				if($sUpdate <> '')
+				{
+					$DB->Query(
+						"UPDATE b_crm_company SET {$sUpdate} WHERE ID = {$ID}",
+						false,
+						'FILE: '.__FILE__.'<br /> LINE: '.__LINE__
+					);
+				};
+			}
+
+			$result = $arFields['ID'] = $ID;
+
+			if(defined('BX_COMP_MANAGED_CACHE'))
+			{
+				$GLOBALS['CACHE_MANAGER']->CleanDir('b_crm_company');
+			}
+
+			$securityRegisterOptions = (new \Bitrix\Crm\Security\Controller\RegisterOptions())
+				->setEntityAttributes($arEntityAttr)
+			;
+			Crm\Security\Manager::getEntityController(CCrmOwnerType::Company)
+				->register($permissionEntityType, $ID, $securityRegisterOptions)
+			;
+
+			//Statistics & History -->
+			Bitrix\Crm\Statistics\CompanyGrowthStatisticEntry::register($ID, $arFields);
+			//<-- Statistics & History
+
+			if($isRestoration)
+			{
+				Bitrix\Crm\Timeline\CompanyController::getInstance()->onRestore($ID, array('FIELDS' => $arFields));
+			}
+			else
+			{
+				Bitrix\Crm\Timeline\CompanyController::getInstance()->onCreate($ID, array('FIELDS' => $arFields));
+			}
+
+			EntityAddress::register(
+				CCrmOwnerType::Company,
+				$ID,
+				EntityAddressType::Primary,
+				array(
+					'ADDRESS_1' => isset($arFields['ADDRESS']) ? $arFields['ADDRESS'] : null,
+					'ADDRESS_2' => isset($arFields['ADDRESS_2']) ? $arFields['ADDRESS_2'] : null,
+					'CITY' => isset($arFields['ADDRESS_CITY']) ? $arFields['ADDRESS_CITY'] : null,
+					'POSTAL_CODE' => isset($arFields['ADDRESS_POSTAL_CODE']) ? $arFields['ADDRESS_POSTAL_CODE'] : null,
+					'REGION' => isset($arFields['ADDRESS_REGION']) ? $arFields['ADDRESS_REGION'] : null,
+					'PROVINCE' => isset($arFields['ADDRESS_PROVINCE']) ? $arFields['ADDRESS_PROVINCE'] : null,
+					'COUNTRY' => isset($arFields['ADDRESS_COUNTRY']) ? $arFields['ADDRESS_COUNTRY'] : null,
+					'COUNTRY_CODE' => isset($arFields['ADDRESS_COUNTRY_CODE']) ? $arFields['ADDRESS_COUNTRY_CODE'] : null,
+					'LOC_ADDR_ID' => isset($arFields['ADDRESS_LOC_ADDR_ID']) ? (int)$arFields['ADDRESS_LOC_ADDR_ID'] : 0,
+					'LOC_ADDR' => isset($arFields['ADDRESS_LOC_ADDR']) ? $arFields['ADDRESS_LOC_ADDR'] : null
+				)
+			);
+
+			EntityAddress::register(
+				CCrmOwnerType::Company,
+				$ID,
+				EntityAddressType::Registered,
+				array(
+					'ADDRESS_1' => isset($arFields['REG_ADDRESS']) ? $arFields['REG_ADDRESS'] : null,
+					'ADDRESS_2' => isset($arFields['REG_ADDRESS_2']) ? $arFields['REG_ADDRESS_2'] : null,
+					'CITY' => isset($arFields['REG_ADDRESS_CITY']) ? $arFields['REG_ADDRESS_CITY'] : null,
+					'POSTAL_CODE' => isset($arFields['REG_ADDRESS_POSTAL_CODE']) ? $arFields['REG_ADDRESS_POSTAL_CODE'] : null,
+					'REGION' => isset($arFields['REG_ADDRESS_REGION']) ? $arFields['REG_ADDRESS_REGION'] : null,
+					'PROVINCE' => isset($arFields['REG_ADDRESS_PROVINCE']) ? $arFields['REG_ADDRESS_PROVINCE'] : null,
+					'COUNTRY' => isset($arFields['REG_ADDRESS_COUNTRY']) ? $arFields['REG_ADDRESS_COUNTRY'] : null,
+					'COUNTRY_CODE' => isset($arFields['REG_ADDRESS_COUNTRY_CODE']) ? $arFields['REG_ADDRESS_COUNTRY_CODE'] : null,
+					'LOC_ADDR_ID' => isset($arFields['REG_ADDRESS_LOC_ADDR_ID']) ? (int)$arFields['REG_ADDRESS_LOC_ADDR_ID'] : 0,
+					'LOC_ADDR' => isset($arFields['REG_ADDRESS_LOC_ADDR']) ? $arFields['REG_ADDRESS_LOC_ADDR'] : null
+				)
+			);
+
+			CCrmEntityHelper::NormalizeUserFields($arFields, self::$sUFEntityID, $GLOBALS['USER_FIELD_MANAGER'], array('IS_NEW' => true));
+			$GLOBALS['USER_FIELD_MANAGER']->Update(self::$sUFEntityID, $ID, $arFields);
+
+			//region Duplicate communication data
+			if (isset($arFields['FM']) && is_array($arFields['FM']))
+			{
+				$CCrmFieldMulti = new CCrmFieldMulti();
+				$CCrmFieldMulti->SetFields('COMPANY', $ID, $arFields['FM']);
+			}
+			//endregion
+
+			$duplicateCriterionRegistrar = DuplicateManager::getCriterionRegistrar(\CCrmOwnerType::Company);
+			$data =
+				(new Crm\Integrity\CriterionRegistrar\Data())
+					->setEntityTypeId(\CCrmOwnerType::Company)
+					->setEntityId($ID)
+					->setCurrentFields($arFields)
+			;
+			$duplicateCriterionRegistrar->register($data);
+
+			\Bitrix\Crm\Counter\Monitor::getInstance()->onEntityAdd(CCrmOwnerType::Company, $arFields);
+
+			// tracking of entity
+			Tracking\Entity::onAfterAdd(CCrmOwnerType::Company, $ID, $arFields);
+
+			//region save parent relations
+			Container::getInstance()->getParentFieldManager()->saveParentRelationsForIdentifier(
+				new Crm\ItemIdentifier(CCrmOwnerType::Company, $ID),
+				$arFields
+			);
+			//endregion
+
+			if($bUpdateSearch)
+			{
+				CCrmSearch::UpdateSearch(array('ID' => $ID, 'CHECK_PERMISSIONS' => 'N'), 'COMPANY', true);
+			}
+			$contactBindings = null;
+			if (isset($arFields['CONTACT_ID']) && is_array($arFields['CONTACT_ID']))
+			{
+				$contactBindings = Crm\Binding\EntityBinding::prepareEntityBindings(CCrmOwnerType::Contact, $arFields['CONTACT_ID']);
+				\Bitrix\Crm\Binding\ContactCompanyTable::bindContactIDs($arFields['ID'], $arFields['CONTACT_ID']);
+				if (isset($GLOBALS["USER"]))
+				{
+					CUserOptions::SetOption('crm', 'crm_contact_search', array('last_selected' => implode(',', $arFields['CONTACT_ID'])));
+				}
+			}
+
+			CCrmEntityHelper::registerAdditionalTimelineEvents([
+				'entityTypeId' => CCrmOwnerType::Company,
+				'entityId' => $ID,
+				'fieldsInfo' => static::GetFieldsInfo(),
+				'previousFields' => [],
+				'currentFields' => $arFields,
+				'options' => $options,
+				'bindings' => [
+					'entityTypeId' => CCrmOwnerType::Contact,
+					'previous' => [],
+					'current' => $contactBindings,
+				],
+			]);
+
+			//region Search content index
+			Bitrix\Crm\Search\SearchContentBuilderFactory::create(
+				CCrmOwnerType::Company
+			)->build($ID, ['checkExist' => true]);
+			//endregion
+
+			self::getContentTypeIdAdapter()->performAdd($arFields, $options);
+
+
+			if(isset($options['REGISTER_SONET_EVENT']) && $options['REGISTER_SONET_EVENT'] === true)
+			{
+				$revenue = round((isset($arFields['REVENUE']) ? doubleval($arFields['REVENUE']) : 0.0), 2);
+				$currencyID = isset($arFields['CURRENCY_ID']) ? $arFields['CURRENCY_ID'] : '';
+				if($currencyID === '')
+				{
+					$currencyID = CCrmCurrency::GetBaseCurrencyID();
+				}
+
+				$multiFields = isset($arFields['FM']) ? $arFields['FM'] : null;
+				$phones = CCrmFieldMulti::ExtractValues($multiFields, 'PHONE');
+				$emails = CCrmFieldMulti::ExtractValues($multiFields, 'EMAIL');
+				$assignedByID = intval($arFields['ASSIGNED_BY_ID']);
+				$createdByID = intval($arFields['CREATED_BY_ID']);
+
+				$liveFeedFields = array(
+					'USER_ID' => $createdByID,
+					'ENTITY_TYPE_ID' => CCrmOwnerType::Company,
+					'ENTITY_ID' => $ID,
+					'TITLE' => GetMessage('CRM_COMPANY_EVENT_ADD'),
+					'MESSAGE' => '',
+					'PARAMS' => array(
+						'TITLE' => $arFields['TITLE'],
+						'LOGO_ID' => isset($arFields['LOGO']) ? $arFields['LOGO'] : '',
+						'TYPE' => isset($arFields['COMPANY_TYPE']) ? $arFields['COMPANY_TYPE'] : '',
+						'REVENUE' => strval($revenue),
+						'CURRENCY_ID' => $currencyID,
+						'PHONES' => $phones,
+						'EMAILS' => $emails,
+						'AUTHOR_ID' => intval($arFields['CREATED_BY_ID']),
+						'RESPONSIBLE_ID' => $assignedByID
+					)
+				);
+
+				$isUntypedCategory = (int)$arFields['CATEGORY_ID'] === 0;
+				if ($isUntypedCategory && Crm\Settings\Crm::isLiveFeedRecordsGenerationEnabled())
+				{
+					CCrmSonetSubscription::RegisterSubscription(
+						CCrmOwnerType::Company,
+						$ID,
+						CCrmSonetSubscriptionType::Responsibility,
+						$assignedByID
+					);
+				}
+
+				$logEventID = $isUntypedCategory
+					? CCrmLiveFeed::CreateLogEvent($liveFeedFields, CCrmLiveFeedEvent::Add, ['CURRENT_USER' => $userID])
+					: false;
+
+				if (
+					$logEventID !== false
+					&& $assignedByID != $createdByID
+					&& $isUntypedCategory
+					&& CModule::IncludeModule("im")
+				)
+				{
+					$url = CCrmOwnerType::GetEntityShowPath(CCrmOwnerType::Company, $ID);
+					$serverName = (CMain::IsHTTPS() ? "https" : "http")."://".((defined("SITE_SERVER_NAME") && SITE_SERVER_NAME <> '') ? SITE_SERVER_NAME : COption::GetOptionString("main", "server_name", ""));
+
+					$arMessageFields = array(
+						"MESSAGE_TYPE" => IM_MESSAGE_SYSTEM,
+						"TO_USER_ID" => $assignedByID,
+						"FROM_USER_ID" => $createdByID,
+						"NOTIFY_TYPE" => IM_NOTIFY_FROM,
+						"NOTIFY_MODULE" => "crm",
+						"LOG_ID" => $logEventID,
+						//"NOTIFY_EVENT" => "company_add",
+						"NOTIFY_EVENT" => "changeAssignedBy",
+						"NOTIFY_TAG" => "CRM|COMPANY_RESPONSIBLE|".$ID,
+						"NOTIFY_MESSAGE" => GetMessage("CRM_COMPANY_RESPONSIBLE_IM_NOTIFY", Array("#title#" => "<a href=\"".$url."\" class=\"bx-notifier-item-action\">".htmlspecialcharsbx($arFields['TITLE'])."</a>")),
+						"NOTIFY_MESSAGE_OUT" => GetMessage("CRM_COMPANY_RESPONSIBLE_IM_NOTIFY", Array("#title#" => htmlspecialcharsbx($arFields['TITLE'])))." (".$serverName.$url.")"
+					);
+					CIMNotify::Add($arMessageFields);
+				}
+			}
+
+			$afterEvents = GetModuleEvents('crm', 'OnAfterCrmCompanyAdd');
+			while ($arEvent = $afterEvents->Fetch())
+			{
+				ExecuteModuleEventEx($arEvent, array(&$arFields));
+			}
+
+			if(isset($arFields['ORIGIN_ID']) && $arFields['ORIGIN_ID'] !== '')
+			{
+				$afterEvents = GetModuleEvents('crm', 'OnAfterExternalCrmCompanyAdd');
+				while ($arEvent = $afterEvents->Fetch())
+				{
+					ExecuteModuleEventEx($arEvent, array(&$arFields));
+				}
+			}
+		}
+
+		if ($result)
+		{
+			$item = $this->createPullItem($arFields);
+			Crm\Integration\PullManager::getInstance()->sendItemAddedEvent(
+				$item,
+				[
+					'TYPE' => self::$TYPE_NAME,
+					'SKIP_CURRENT_USER' => ($userID !== 0),
+					'CATEGORY_ID' => ($arFields['CATEGORY_ID'] ?? 0),
+				]
+			);
+		}
+
+		self::createSharedFolder($arFields, $options);
+
+		return $result;
+	}
 	// create shared folder for company
 
 	protected function createSharedFolder(array $fields): int
 	{
-		
 		if (!Main\Loader::includeModule('disk'))
 		{
-			return false;
+			return 0;
 		}
 
-		$folderName = $fields['TITLE'];
-		$folderName = Main\Text\Encoding::convertEncoding($folderName, LANG_CHARSET, 'UTF-8');
+		$folder = Crm\Integration\DiskManager::createFolderForEntity(
+			$fields['TITLE'],
+			CCrmOwnerType::Company,
+			$fields['ID']
+		);
 
-		\Bitrix\Disk\Folder::add([
-			'NAME' => $folderName,
-			'CREATED_BY' => $fields['CREATED_BY_ID'],
-			'UF_ENTITY_TYPE' => self::$TYPE_NAME,
-			'UF_ENTITY_ID' => $fields['ID'],
-		], $fields['CREATED_BY_ID'], true);
-
-		return true;
+		return $folder ? $folder->getId() : 0;
 	}
 
 	protected function createPullItem(array $data = []): array
