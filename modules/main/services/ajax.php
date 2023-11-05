@@ -29,17 +29,3 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_befo
 \Bitrix\Main\Application::getInstance()->run();
 
 
-// <?php
-// $APPLICATION->IncludeComponent(
-// 	'bitrix:intranet.structure.visual',
-// 	'.default',
-// 	[
-// 		'DETAIL_URL' => SITE_DIR . 'company/structure.php?set_filter_structure=Y&structure_UF_DEPARTMENT=#ID#',
-// 		'PROFILE_URL' => SITE_DIR . 'company/personal/user/#ID#/',
-// 		'PM_URL' => SITE_DIR . 'company/personal/messages/chat/#ID#/',
-// 		'NAME_TEMPLATE' => '',
-// 		'USE_USER_LINK' => 'Y',
-// 	],
-// 	false
-// );
-// ?>
