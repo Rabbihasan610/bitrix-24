@@ -1673,12 +1673,12 @@ class CAllCrmCompany
 	}
 	// create shared folder for company
 
-	protected function createSharedFolder(array $fields): void
+	protected function createSharedFolder(array $fields): int
 	{
 		
 		if (!Main\Loader::includeModule('disk'))
 		{
-			return;
+			return false;
 		}
 
 
@@ -1693,7 +1693,7 @@ class CAllCrmCompany
 			'UF_ENTITY_ID' => $fields['ID'],
 		], $fields['CREATED_BY_ID'], true);
 
-		return;
+		return true;
 	}
 
 	protected function createPullItem(array $data = []): array
