@@ -1674,6 +1674,11 @@ class CAllCrmCompany
 
 	protected function createSharedFolder($arFields)
 	{
+		if(!Crm\Integration\DiskManager::isEnabled())
+		{
+			return;
+		}
+		
 		$folder = new Crm\Integration\Disk\CompanyFolder($arFields['ID']);
 		$folder->create();
 	}
