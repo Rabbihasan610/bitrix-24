@@ -1667,28 +1667,10 @@ class CAllCrmCompany
 			);
 		}
 
-		self::createSharedFolder($arFields, $options);
-
+		
 		return $result;
 	}
-	// create shared folder for company
-
-	protected function createSharedFolder(array $fields): int
-	{
-		if (!Main\Loader::includeModule('disk'))
-		{
-			return 0;
-		}
-
-		$folder = Crm\Integration\DiskManager::createFolderForEntity(
-			$fields['TITLE'],
-			CCrmOwnerType::Company,
-			$fields['ID']
-		);
-
-		return $folder ? $folder->getId() : 0;
-	}
-
+	
 	protected function createPullItem(array $data = []): array
 	{
 		return [
