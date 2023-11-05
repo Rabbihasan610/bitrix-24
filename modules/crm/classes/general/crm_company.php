@@ -1672,7 +1672,6 @@ class CAllCrmCompany
 		return $result;
 	}
 
-	
 	protected function createPullItem(array $data = []): array
 	{
 		return [
